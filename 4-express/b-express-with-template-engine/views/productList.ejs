@@ -1,0 +1,41 @@
+<body>
+  <h1>Toko Aktivitas Pecinta Alam</h1>
+  <h2>Daftar Produk</h2>
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi aperiam
+    praesentium aliquid recusandae quam nam culpa voluptate dolor fugit unde.
+  </p>
+
+  <a href="/tambah">Tambah produk baru</a>
+
+  <div
+    style="
+      margin-top: 0.5rem;
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: 1fr 1fr 1fr;
+    "
+  >
+    <% products.forEach((product) => { %>
+    <div
+      style="
+        border-radius: 0.25rem;
+        padding: 0.25rem;
+        border: 1px solid gray;
+        background-color: #efefef;
+        display: grid;
+        gap: 0.25rem;
+      "
+    >
+      <h4 style="margin: 0">
+        <%= product.name %>
+        <!-- ini untuk me-render value yang kita ingin tampilkan -->
+      </h4>
+      <span>
+        <%= product.price %>
+        <!-- ini untuk me-render value yang kita ingin tampilkan -->
+      </span>
+    </div>
+    <% }) %>
+  </div>
+</body>
