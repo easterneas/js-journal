@@ -93,7 +93,132 @@ app
   // method .redirect().
   // Method ini minimal meminta 1 parameter URL dalam bentuk string.
   res.redirect('/');
-});
+})
+// ? Kita lanjutkan dengan edit sebuah produk ya...
+// ? Untuk edit, kita bisa manfaatkan Route Parameter, yang bisa kamu
+// ? pelajari lebih lanjut di sini: https://expressjs.com/en/guide/routing.html#route-parameters
+// ? Untuk memanfaatkan route ini, kita buat 2 route baru ya!
+.get('/produk/:id', (req, res) => {
+  //          ^
+  // Tanda ":" di atas ini menandakan bahwa ketika ada route dengan pola seperti ini,
+  // value setelah tanda "/" kedua akan disimpan ke dalam param dengan key berupa id.
+
+  // "id" ini bisa dapat kita akses dengan mengambil data dari req.params seperti berikut:
+  // * console.log(req.params.id)
+
+  // Kita ambil data products-nya lagi
+  const products = JSON.parse(fs.readFileSync('./data/products.json', 'utf8'));
+
+  // Lalu kita cari product dengan "id" yang dicari seperti ini...
+  // ? Kita dapat manfaatkan built-in method [array].find() untuk [1] mengembalikan data
+  // ? jika ditemukan, dan [2] undefined jika tidak ditemukan
+
+  // ! Perlu diingat, setiap params yang kita kirimkan, akan selalu berupa string!
+  // ? Jadi, selalu ubah tipe data menjadi tipe data yang sesuai ya...
+  const product = products.find(p => p.id === Number(req.params.id));
+
+  // Kemudian, kita dapat menjalankan 2 kondisi di sini:
+  // [1] -- jika produk dengan "id" yang sama ketemu, dan
+  // [2] -- jika produk yang dicari tidak ditemukan.
+
+  // Kita bisa penuhi dengan metode guard clause, caranya seperti ini:
+  // Jika produk yang dicari tidak ditemukan...
+  if(!product) {
+    // ...return dengan res.send().
+    // return akan menghentikan function hanya sampai di sini saja
+    return res.send("Produk tidak ditemukan.");
+  }
+
+  // Jika produk yang dicari ditemukan, tampilkan dengan res.render()
+  res.render('productEditForm', { product });
+
+  // * Mengapa guard clause?
+
+  // * Guard clause, sesuai namanya, merupakan "checkpoint" untuk memeriksa
+  // * apakah suatu kondisi terpenuhi atau tidak.
+
+  // * Dari contoh di atas, kita bisa melihat bahwa dengan adanya guard clause,
+  // * jika tidak ada product, akan langsung dikirim oleh server,
+  // * dan fungsi tidak akan dilanjutkan (karena return akan menghentikan operasi
+  // * function ini).
+
+  // * Saya gambarkan ilustrasinya dengan garis:
+
+  /**
+   ** | Mulai
+   *  |
+   *? | Cek apakah produk ada atau tidak
+   *  |\
+   *? | \ Tidak ada
+   *  |  \
+   ** |   Buat res.send() dengan tulisan "Produk tidak ditemukan",
+   ** |   lalu hentikan function
+   *  |
+   *? | Ada
+   *  |
+   ** Buat res.render() yang mengambil "productForm" sebagai
+   ** template-nya, kemudian teruskan product yang didapat ke sana.
+   */
+
+  // * Dengan ini, struktur kodingan kita akan menjadi lebih rapi,
+  // * karena tidak ada if-else.
+
+  // ? Untuk sekarang efeknya mungkin belum terasa, namun ketika
+  // ? kamu dihadapkan dengan kondisi yang kompleks...
+  // ? kamu bisa coba cara ini :D
+
+  // referensi: https://pjmcdermott92.medium.com/writing-cleaner-javascript-with-guard-clauses-fe4bb8788425
+})
+// Untuk meng-handle data product yang kita mau ubah, kita dapat gunakan
+// method POST, sama seperti cara kita meng-handle penambahan data
+// product yang baru.
+
+// Mengapa POST? Karena sejatinya, HTML Form hanya mendukung 2 method
+// seperti GET dan POST.
+  .post("/produk/:id", (req, res) => {
+  // Kita gunakan cara yang sama seperti cara waktu kita meng-GET
+  // detail product yang kita cari ya...
+  const products = JSON.parse(fs.readFileSync('./data/products.json', 'utf8'));
+
+  const product = products.find(p => p.id === Number(req.params.id));
+
+  if (!product) {
+    return res.send("Produk tidak ditemukan.");
+  }
+
+  // * HINT: Kita juga bisa lakukan validasi req.body, dan mengeluarkan error
+  // *       dengan cara yang sama seperti contoh di atas ya... contohnya:
+  if (!req.body.name) {
+    return res.send("Nama produk tidak boleh kosong!")
+  }
+
+  if (!req.body.price) {
+    return res.send("Harga produk tidak boleh kosong!")
+  }
+
+  // Nah, setelah itu, kita mulai update di sini nih...
+  // tapi caranya bagaimana?
+
+  // Kita (seperti biasa) mulai dengan console.log() terlebih dahulu ya
+  // * console.log(product)
+  // Tujuannya, agar product yang kita mau cari sama dengan ID produk
+  // yang sebenarnya kita mau ubah.
+
+  // Setelah itu, kita juga lihat data req.body yang diterima juga:
+  // * console.log(req.body)
+
+  // Kemudian, barulah kita mulai ubah product-nya
+  // ! Perlu diingat, sama seperti req.params, req.body yang dikirimkan dengan urlencoded, akan selalu berupa string!
+  // ? Jadi, selalu ubah tipe data menjadi tipe data yang sesuai ya...
+  product.name = req.body.name
+  product.price = Number(req.body.price)
+
+  // Setelah itu, kita simpan dengan fs.writeFileSync()
+  fs.writeFileSync('./data/products.json', JSON.stringify(products, null, 2));
+
+  // Setelah semuanya berhasil, kita "lemparkan" ke halaman utama
+  res.redirect('/')
+})
 
 // Setelah semuanya siap, jalankan .listen() seperti biasa ya
 app.listen(PORT);

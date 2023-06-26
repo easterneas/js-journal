@@ -1,0 +1,41 @@
+<body>
+  <!-- form ini akan bertugas untuk mengubah suatu product -->
+  <!--
+    TIP:
+    Form ini dapat kamu gabungkan menjadi 1 dengan productForm.ejs nih...
+    Coba kamu cari tau perbedaan antara file ini dengan productForm.ejs,
+    kemudian coba cari caranya agar kamu dapat menggabungkannya.
+
+    HINT: Gunakan if di dalam tag EJS yang sesuai!
+  -->
+  <form method="post" action="/produk/<%= product.id %>">
+    <!--
+      Karena kita mengambil data product untuk diubah, maka kita harus
+      masukkan nilai awal dari product tersebut terlebih dahulu ya...
+    -->
+    <div>
+      <span>Nama Produk</span>
+      <input
+        type="text"
+        name="name"
+        placeholder="Masukkan nama produk..."
+        value="<%= product.name %>"
+      />
+    </div>
+
+    <div>
+      <span>Harga Produk</span>
+      <input
+        type="number"
+        name="price"
+        placeholder="Masukkan harga..."
+        value="<%= product.price %>"
+      />
+    </div>
+
+    <div>
+      <input type="submit" value="Kirim" />
+      <a href="/">Kembali</a>
+    </div>
+  </form>
+</body>

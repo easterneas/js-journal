@@ -27,10 +27,12 @@
         gap: 0.25rem;
       "
     >
-      <h4 style="margin: 0">
-        <%= product.name %>
-        <!-- ini untuk me-render value yang kita ingin tampilkan -->
-      </h4>
+      <a href="produk/<%= product.id %>">
+        <h4 style="margin: 0">
+          <%= product.name %>
+          <!-- ini untuk me-render value yang kita ingin tampilkan -->
+        </h4>
+      </a>
       <span>
         <%= product.price %>
         <!-- ini untuk me-render value yang kita ingin tampilkan -->
