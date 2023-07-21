@@ -1,0 +1,24 @@
+// File tsconfig.json
+// File ini merupakan konfigurasi yang bisa teman-teman gunakan
+// ketika menjalankan `npx tsc` (atau `tsc` saja) tanpa menambahkan
+// argumen apapun.
+
+// * [UPDATE]
+// Dengan kata lain, ketika kita ingin meng-compile seluruh file
+// berbasis TypeScript pada project kita dengan `npx tsc` tadi,
+// maka file tsconfig.json akan digunakan.
+{
+  "compilerOptions": {
+    // "module" menandakan bahwa kita akan menggunakan edisi/versi
+    // ECMAScript atau Node.js ke berapa...
+    "module": "ESNext",
+    // ...sementara "target", sesuai namanya, merupakan tujuan akhir
+    // ketika kita compile dengan menggunakan perintah `npx tsc`.
+    "target": "ES2017",
+
+    // "outDir" merupakan option yang menentukan direktori tempat
+    // file hasil compile, dimulai dari tempat file tsconfig.json
+    // ini berada
+    "outDir": "dist"
+  }
+}

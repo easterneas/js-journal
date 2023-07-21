@@ -1,0 +1,10 @@
+# ? TIP:
+# ? Kita bisa gunakan .gitignore di folder lain di dalam project
+# ? seperti ini salah satunya.
+# ? Tujuannya adalah untuk meng-ignore file/folder spesifik
+# ? yang hanya ada pada folder ini dan juga sub-folder di dalamnya.
+
+dist
+
+# ? Sebagai contoh, file .js setelah di-compile saya ignore di sini.
+*.js
